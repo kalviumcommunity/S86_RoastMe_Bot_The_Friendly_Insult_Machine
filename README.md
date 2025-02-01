@@ -1,6 +1,6 @@
-# RoastMe Bot – The Friendly Insult Machine
+## RoastMe Bot – The Friendly Insult Machine
 
-## Project Overview
+# Project Overview
 
 Ever felt like you needed a reality check? RoastMe Bot is your personal AI-powered insult generator, designed to keep you humble (or completely annihilate your ego). Whether you're looking for a lighthearted joke, a witty jab, or a soul-crushing roast, this bot has you covered.
 
