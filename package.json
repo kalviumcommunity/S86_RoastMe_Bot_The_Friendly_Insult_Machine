@@ -1,0 +1,19 @@
+{
+  "name": "s86_roastme_bot_the_friendly_insult_machine",
+  "version": "1.0.0",
+  "description": "Ever felt like you needed a reality check? RoastMe Bot is your personal AI-powered insult generator, designed to keep you humble (or completely annihilate your ego). Whether you're looking for a lighthearted joke, a witty jab, or a soul-crushing roast, this bot has you covered.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalviumcommunity/S86_RoastMe_Bot_The_Friendly_Insult_Machine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalviumcommunity/S86_RoastMe_Bot_The_Friendly_Insult_Machine/issues"
+  },
+  "homepage": "https://github.com/kalviumcommunity/S86_RoastMe_Bot_The_Friendly_Insult_Machine#readme"
+}
