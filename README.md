@@ -48,3 +48,5 @@ MongoDB (stores top roasts for reference)
 - **Frontend**: Vercel
 
 - **Backend**: Render
+  
+- **Deployed link**:https://s86-roastme-bot-the-friendly-insult-ge3q.onrender.com
