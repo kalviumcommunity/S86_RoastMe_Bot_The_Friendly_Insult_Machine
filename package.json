@@ -1,5 +1,18 @@
 {
+<<<<<<< HEAD
   "dependencies": {
     "express": "^4.21.2"
   }
+=======
+  "name": "s86_roastme_bot_the_friendly_insult_machine",
+  "version": "1.0.0",
+  "description": "RoastMe Bot is an AI-powered web application that generates friendly insults (roasts) and comebacks. The bot provides varying roast levels, from mild to savage, along with an apology button to soften the mood after a roast. It’s designed to entertain users while allowing them to have some fun with lighthearted insults and comebacks.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+>>>>>>> 2a44144a1535d8894a1079139c2b50dcc8e239ae
 }
