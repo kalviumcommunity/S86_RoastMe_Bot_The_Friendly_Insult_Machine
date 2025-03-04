@@ -23,16 +23,24 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('✅ MongoDB connected successfully');
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1); // Exit process on connection failure
+  }
+}
+connectDB();
 
-// Root route
+// Root route - Shows DB connection status
 app.get('/', (req, res) => {
-  res.send('Welcome to the server!');
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Not Connected';
+  res.json({ message: 'Welcome to the server!', database: dbStatus });
 });
 
 // /ping route
@@ -42,5 +50,5 @@ app.get('/ping', (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`🚀 Server running on http://localhost:${port}`);
 });
