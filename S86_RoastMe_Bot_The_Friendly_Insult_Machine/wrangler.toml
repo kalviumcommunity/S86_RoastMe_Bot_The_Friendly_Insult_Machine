@@ -1,0 +1,9 @@
+name = "s86-roastme-bot"
+account_id = "7a6aa413d36a1b76a6fdb0ff48814e9c"
+compatibility_date = "2025-03-14"
+
+main = "src/index.js"
+workers_dev = true
+
+[vars]
+NODE_ENV = "production"
