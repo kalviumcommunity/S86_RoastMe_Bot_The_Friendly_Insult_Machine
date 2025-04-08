@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const roastRoutes = require('./routes/roastRoutes');
 const comebackRoutes = require('./routes/comebackRoutes');
 const apologyRoutes = require('./routes/apologyRoutes');
+const entityRoutes = require('./routes/entityRoutes'); // Import entity routes
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/roasts', roastRoutes);
 app.use('/api/comebacks', comebackRoutes);
 app.use('/api/apologies', apologyRoutes);
+app.use('/api/entities', entityRoutes); // Register entity routes
 
 // Start server
 app.listen(port, () => {
