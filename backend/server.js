@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const roastRoutes = require('./routes/roastRoutes');
 const comebackRoutes = require('./routes/comebackRoutes');
 const apologyRoutes = require('./routes/apologyRoutes');
-const entityRoutes = require('./routes/entityRoutes'); // Import entity routes
+const entityRoutes = require('./routes/entityRoutes'); // Entity routes
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -28,17 +28,17 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the RoastMe Bot API!', database: dbStatus });
 });
 
-// /ping route
+// Ping route for health check
 app.get('/ping', (req, res) => {
   res.status(200).json({ message: 'Pong' });
 });
 
 // API Routes
-app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes); // ✅ CRUD for Users
 app.use('/api/roasts', roastRoutes);
 app.use('/api/comebacks', comebackRoutes);
 app.use('/api/apologies', apologyRoutes);
-app.use('/api/entities', entityRoutes); // Register entity routes
+app.use('/api/entities', entityRoutes); // Entities
 
 // Start server
 app.listen(port, () => {
