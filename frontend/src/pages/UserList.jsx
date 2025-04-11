@@ -10,7 +10,7 @@ const UserList = () => {
   const fetchUsers = () => {
     axios.get("http://localhost:3000/api/users")
       .then((res) => {
-        setUsers(res.data.data);
+        setUsers(res.data.users); // ✅ fixed this line
         setLoading(false);
       })
       .catch((err) => {
@@ -35,9 +35,13 @@ const UserList = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h1>User List</h1>
-      <Link to="/add"><button>Add New User</button></Link>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">User List</h1>
+      <Link to="/add">
+        <button className="mb-4 px-4 py-2 bg-blue-600 text-white rounded">
+          Add New User
+        </button>
+      </Link>
       {users.length > 0 ? (
         users.map((user) => (
           <UserCard key={user._id} user={user} onDelete={handleDelete} />

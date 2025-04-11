@@ -3,11 +3,11 @@ const { body, validationResult } = require("express-validator");
 const router = express.Router();
 const User = require("../models/user");
 
-// GET all users
+// ✅ GET all users - modified to return { users: [...] }
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
-    res.json({ success: true, data: users });
+    res.status(200).json({ users }); // ✅ Matches expected frontend structure
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
