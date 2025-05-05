@@ -1,9 +1,25 @@
-const mongoose = require('mongoose');
+// backend/models/User.js
+const sequelize = require('../config/database');  // No destructuring needed
+const { DataTypes } = require('sequelize');  // Importing DataTypes
 
-const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now }
+// Define the User model
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+}, {
+  timestamps: true,
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = User;  // Export the User model
