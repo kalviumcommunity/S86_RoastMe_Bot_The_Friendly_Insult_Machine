@@ -1,18 +1,18 @@
+// routes/entityRoutes.js
 const express = require('express');
 const { body, validationResult, param } = require('express-validator');
-const mongoose = require('mongoose');
 const router = express.Router();
-const Entity = require('../models/entity');
+const { Entity, User } = require('../models'); // Sequelize models
 
-// POST - Create a new entity with validation
+// POST - Create a new entity
 router.post(
   '/',
   [
-    body("name").notEmpty().withMessage("Name is required"),
-    body("description").optional().isString().withMessage("Description must be a string"),
-    body("created_by")
-      .notEmpty().withMessage("created_by is required")
-      .custom(value => mongoose.Types.ObjectId.isValid(value)).withMessage("Invalid user ID"),
+    body('name').notEmpty().withMessage('Name is required'),
+    body('description').optional().isString().withMessage('Description must be a string'),
+    body('created_by')
+      .notEmpty().withMessage('created_by is required')
+      .isInt().withMessage('created_by must be a valid user ID'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -22,39 +22,56 @@ router.post(
 
     try {
       const { name, description, created_by } = req.body;
-      const newEntity = new Entity({ name, description, created_by });
-      await newEntity.save();
+
+      // Ensure the user exists before creating the entity
+      const user = await User.findByPk(created_by);
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      // Create a new entity with the validated data
+      const newEntity = await Entity.create({ name, description, created_by });
 
       res.status(201).json({
         success: true,
-        message: "Entity created successfully",
-        entity: newEntity
+        message: 'Entity created successfully',
+        entity: newEntity,
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: "Server error",
-        error: error.message
+        message: 'Server error',
+        error: error.message,
       });
     }
   }
 );
 
-// GET - Fetch all entities with created_by user info
+// GET - All entities with user info
 router.get('/', async (req, res) => {
   try {
-    const entities = await Entity.find().populate('created_by', 'name email');
+    const entities = await Entity.findAll({
+      include: [
+        {
+          model: User,
+          as: 'creator',  // Ensure 'creator' is the alias used for user
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
+
     res.status(200).json({ success: true, entities });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
 });
 
-// GET - Fetch entities by user ID with created_by user info
+// GET - Entities by specific user
 router.get(
   '/by-user/:userId',
   [
-    param("userId").custom(value => mongoose.Types.ObjectId.isValid(value)).withMessage("Invalid user ID"),
+    param('userId')
+      .isInt().withMessage('Invalid user ID'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -63,12 +80,28 @@ router.get(
     }
 
     try {
-      const entities = await Entity.find({ created_by: req.params.userId })
-        .populate('created_by', 'name email');
+      const userId = req.params.userId;
 
-      res.status(200).json({ success: true, entities });
+      // Find entities created by the specific user
+      const entities = await Entity.findAll({
+        where: { created_by: userId },
+        include: [
+          {
+            model: User,
+            as: 'creator', // Ensure the correct alias is used for the user model
+            attributes: ['name', 'email'],
+          },
+        ],
+      });
+
+      // Return entities if found, else show a message
+      if (entities.length > 0) {
+        res.status(200).json({ success: true, entities });
+      } else {
+        res.status(404).json({ success: false, message: 'No entities found for this user' });
+      }
     } catch (error) {
-      res.status(500).json({ success: false, message: "Server error", error: error.message });
+      res.status(500).json({ success: false, message: 'Server error', error: error.message });
     }
   }
 );

@@ -1,22 +1,18 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const entitySchema = new mongoose.Schema({
+const Entity = sequelize.define('Entity', {
   name: {
-    type: String,
-    required: true,
-    trim: true
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   description: {
-    type: String,
-    default: ""
+    type: DataTypes.TEXT,
   },
   created_by: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    type: DataTypes.INTEGER,
+    allowNull: false,
   }
-}, {
-  timestamps: true // adds createdAt and updatedAt fields
 });
 
-module.exports = mongoose.model('Entity', entitySchema);
+module.exports = Entity;

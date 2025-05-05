@@ -1,16 +1,15 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const { connectDB } = require('./config/database');  // Correct path to connectDB
 require('dotenv').config();
-
-const connectDB = require('./config/db'); // MongoDB connection
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
 const roastRoutes = require('./routes/roastRoutes');
 const comebackRoutes = require('./routes/comebackRoutes');
 const apologyRoutes = require('./routes/apologyRoutes');
-const entityRoutes = require('./routes/entityRoutes'); // Entity routes
+const entityRoutes = require('./routes/entityRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,13 +18,12 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
+// Connect to MySQL
 connectDB();
 
 // Root route - Shows DB connection status
 app.get('/', (req, res) => {
-  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Not Connected';
-  res.json({ message: 'Welcome to the RoastMe Bot API!', database: dbStatus });
+  res.json({ message: 'Welcome to the RoastMe Bot API!' });
 });
 
 // Ping route for health check
@@ -34,11 +32,11 @@ app.get('/ping', (req, res) => {
 });
 
 // API Routes
-app.use('/api/users', userRoutes); // ✅ CRUD for Users
+app.use('/api/users', userRoutes);
 app.use('/api/roasts', roastRoutes);
 app.use('/api/comebacks', comebackRoutes);
 app.use('/api/apologies', apologyRoutes);
-app.use('/api/entities', entityRoutes); // Entities
+app.use('/api/entities', entityRoutes);
 
 // Start server
 app.listen(port, () => {
