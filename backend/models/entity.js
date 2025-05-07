@@ -1,10 +1,23 @@
-const mongoose = require('mongoose');
+// models/Entity.js
+module.exports = (sequelize, DataTypes) => {
+  const Entity = sequelize.define('Entity', {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    created_by: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onDelete: 'SET NULL',
+    }
+  });
 
-const entitySchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String }
-});
-
-const Entity = mongoose.model('Entity', entitySchema);
-
-module.exports = Entity;
+  return Entity;
+};
