@@ -1,25 +1,26 @@
-// backend/models/User.js
-const sequelize = require('../config/database');  // No destructuring needed
-const { DataTypes } = require('sequelize');  // Importing DataTypes
+// models/user.js
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define("User", {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: "user",
+    },
+  });
 
-// Define the User model
-const User = sequelize.define('User', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-}, {
-  timestamps: true,
-});
-
-module.exports = User;  // Export the User model
+  return User;
+};

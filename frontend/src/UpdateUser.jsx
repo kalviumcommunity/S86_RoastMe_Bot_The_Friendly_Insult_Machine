@@ -2,24 +2,28 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { updateUser } from "./api";
+import { updateUser } from "./api"; // Import the updateUser function
 
 export default function UpdateUser() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", role: "" }); // Add role
 
   useEffect(() => {
     // Fetch existing user data
-    axios.get(`https://your-backend-url.com/users/${id}`).then((res) => {
-      setFormData({ name: res.data.name, email: res.data.email });
+    axios.get(`http://localhost:3000/api/users/${id}`).then((res) => {
+      setFormData({ 
+        name: res.data.name, 
+        email: res.data.email, 
+        role: res.data.role || "" // Add role if available
+      });
     });
   }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await updateUser(id, formData);
-    navigate("/"); // go back to user list
+    await updateUser(id, formData);  // Call the updateUser function to update the user
+    navigate("/"); // go back to user list after update
   };
 
   return (
@@ -38,6 +42,13 @@ export default function UpdateUser() {
           value={formData.email}
           onChange={(e) => setFormData({...formData, email: e.target.value})}
           placeholder="Email"
+          className="border p-2 w-full"
+        />
+        <input
+          type="text"
+          value={formData.role}
+          onChange={(e) => setFormData({...formData, role: e.target.value})}
+          placeholder="Role (optional)"
           className="border p-2 w-full"
         />
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Update</button>

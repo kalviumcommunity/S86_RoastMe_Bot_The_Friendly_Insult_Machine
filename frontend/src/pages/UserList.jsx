@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import UserCard from "../components/UserCard";
+import UserCard from "../components/UserCard"; // UserCard component should handle displaying user info
 import { Link } from "react-router-dom";
 
 const UserList = () => {
@@ -10,7 +10,7 @@ const UserList = () => {
   const fetchUsers = () => {
     axios.get("http://localhost:3000/api/users")
       .then((res) => {
-        setUsers(res.data.users); // ✅ fixed this line
+        setUsers(res.data.users); // Fetch and set users with roles
         setLoading(false);
       })
       .catch((err) => {
@@ -26,7 +26,7 @@ const UserList = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/api/users/${id}`);
-      fetchUsers();
+      fetchUsers(); // Refresh the user list after deletion
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -44,7 +44,11 @@ const UserList = () => {
       </Link>
       {users.length > 0 ? (
         users.map((user) => (
-          <UserCard key={user._id} user={user} onDelete={handleDelete} />
+          <UserCard
+            key={user.id} // Use `id` here assuming `id` is the unique identifier
+            user={user}
+            onDelete={handleDelete}
+          />
         ))
       ) : (
         <p>No users found.</p>
